@@ -1,36 +1,136 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI-Ready API Checker
 
-## Getting Started
+A web tool that analyzes OpenAPI specifications for "AI-readiness" and "token-friendliness," providing numeric scores and actionable suggestions for each endpoint. The tool combines standard OpenAPI linting with custom AI-focused heuristics.
 
-First, run the development server:
+## Features
 
+- **OpenAPI Specification Analysis**: Upload JSON/YAML files or provide URLs
+- **AI Readiness Scoring**: Custom heuristics for LLM-friendly APIs
+- **Spectral Linting Integration**: Standard OpenAPI quality checks
+- **Real-time Progress**: Streaming analysis with progress updates
+- **Actionable Suggestions**: Top 3 suggestions per endpoint
+- **Modern UI**: Beautiful, responsive interface with dark mode support
+
+## AI Readiness Heuristics
+
+The tool evaluates endpoints based on:
+
+- **Documentation Completeness**: Summary, description, parameter docs
+- **Response Examples**: Help AI understand data structures
+- **Error Handling**: Proper 4xx/5xx response documentation
+- **Pagination Support**: Limit, page, offset parameters for large datasets
+- **Parameter Documentation**: All parameters should have descriptions
+- **Naming Consistency**: Uniform naming conventions across paths
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd amiready-ai
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install --legacy-peer-deps
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Start the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Learn More
+### Usage
 
-To learn more about Next.js, take a look at the following resources:
+1. **Upload Specification**: Choose between URL input or file upload
+2. **Optional API Key**: Add your OpenAI API key for enhanced analysis
+3. **Analyze**: Click "Analyze Specification" to start the process
+4. **Review Results**: View scores, suggestions, and Spectral linting results
+5. **Export/Share**: Download reports or share permalinks
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Endpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### POST /api/analyze
+Analyzes an OpenAPI specification and returns results via Server-Sent Events.
 
-## Deploy on Vercel
+**Request Body (FormData):**
+- `url` (optional): URL to OpenAPI specification
+- `file` (optional): Uploaded OpenAPI file
+- `apiKey` (optional): OpenAI API key
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Response:** Server-Sent Events stream with progress updates and final results
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### GET /api/analyze?id={resultId}
+Retrieves stored analysis results by ID.
+
+## Sample OpenAPI Specification
+
+A sample OpenAPI specification is included at `/public/sample-openapi.json` for testing purposes.
+
+## Technical Architecture
+
+- **Frontend**: Next.js 15 with React 19, TypeScript, Tailwind CSS
+- **Backend**: Next.js API routes with Server-Sent Events
+- **Analysis**: Custom heuristics engine + Spectral integration
+- **Storage**: In-memory storage (production: database recommended)
+
+## Development
+
+### Project Structure
+
+```
+src/
+├── app/
+│   ├── api/analyze/
+│   │   └── route.ts          # Analysis API endpoint
+│   ├── globals.css           # Global styles
+│   ├── layout.tsx            # Root layout
+│   └── page.tsx              # Main application page
+└── lib/
+    └── utils.ts              # Utility functions
+```
+
+### Key Components
+
+- **Main Page**: File upload, URL input, progress tracking, results display
+- **Analysis Engine**: Custom heuristics for AI readiness scoring
+- **API Route**: Handles file uploads, URL fetching, and streaming responses
+- **Results View**: Displays scores, suggestions, and Spectral results
+
+## Future Enhancements
+
+- [ ] Full Spectral integration with custom rules
+- [ ] PDF report generation
+- [ ] Database persistence for results
+- [ ] Advanced AI analysis using OpenAI API
+- [ ] Batch analysis for multiple specs
+- [ ] Custom rules configuration
+- [ ] API usage analytics
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Acknowledgments
+
+- [Spectral](https://stoplight.io/open-source/spectral) for OpenAPI linting
+- [Next.js](https://nextjs.org/) for the framework
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [Lucide React](https://lucide.dev/) for icons
