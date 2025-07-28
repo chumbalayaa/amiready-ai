@@ -94,17 +94,38 @@ src/
 │   │   └── route.ts          # Analysis API endpoint
 │   ├── globals.css           # Global styles
 │   ├── layout.tsx            # Root layout
-│   └── page.tsx              # Main application page
+│   └── page.tsx              # Main application page (simplified)
+├── components/
+│   ├── InputSection.tsx      # File upload and URL input component
+│   ├── ProgressSection.tsx   # Analysis progress display
+│   └── ResultsView.tsx       # Results display component
+├── hooks/
+│   └── useAnalysis.ts        # Custom hook for analysis logic
+├── types/
+│   └── analysis.ts           # TypeScript interfaces and types
 └── lib/
     └── utils.ts              # Utility functions
 ```
 
 ### Key Components
 
-- **Main Page**: File upload, URL input, progress tracking, results display
+- **Main Page** (`page.tsx`): Orchestrates the application flow
+- **InputSection**: Handles file upload, URL input, and form submission
+- **ProgressSection**: Displays real-time analysis progress
+- **ResultsView**: Shows analysis results with scores and suggestions
+- **useAnalysis Hook**: Manages analysis state and API communication
 - **Analysis Engine**: Custom heuristics for AI readiness scoring
 - **API Route**: Handles file uploads, URL fetching, and streaming responses
-- **Results View**: Displays scores, suggestions, and Spectral results
+
+### Code Organization Benefits
+
+The application has been refactored for better maintainability and readability:
+
+- **Separation of Concerns**: Each component has a single responsibility
+- **Reusability**: Components can be easily reused or tested independently
+- **Type Safety**: Centralized types in `src/types/analysis.ts`
+- **Custom Hooks**: Business logic extracted into reusable hooks
+- **Modular Architecture**: Clean component composition and data flow
 
 ## Future Enhancements
 
