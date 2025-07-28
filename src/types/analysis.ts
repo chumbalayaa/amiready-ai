@@ -1,20 +1,4 @@
-export interface SpectralResult {
-  errors: Array<{
-    message: string;
-    path: string[];
-    severity: string;
-  }>;
-  warnings: Array<{
-    message: string;
-    path: string[];
-    severity: string;
-  }>;
-  info: Array<{
-    message: string;
-    path: string[];
-    severity: string;
-  }>;
-}
+import { SpectralResult } from './openapi';
 
 export interface EndpointScore {
   path: string;
@@ -26,7 +10,11 @@ export interface EndpointScore {
 
 export interface AnalysisResult {
   id: string;
-  spectralResults: SpectralResult;
+  spectralResults: {
+    errors: SpectralResult[];
+    warnings: SpectralResult[];
+    info: SpectralResult[];
+  };
   aiReadinessScores: EndpointScore[];
   suggestions: string[];
   timestamp: string;

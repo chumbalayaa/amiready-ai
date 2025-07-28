@@ -6,7 +6,7 @@ import { ResultsView } from "@/components/ResultsView";
 import { useAnalysis } from "@/hooks/useAnalysis";
 
 export default function Home() {
-  const { isAnalyzing, progress, currentStep, results, analyze, reset } = useAnalysis();
+  const { isAnalyzing, progress, currentStep, results, analyze, reset, steps } = useAnalysis();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
@@ -26,7 +26,7 @@ export default function Home() {
             <InputSection onAnalyze={analyze} isAnalyzing={isAnalyzing} />
             
             {isAnalyzing && (
-              <ProgressSection currentStep={currentStep} progress={progress} />
+              <ProgressSection steps={steps} progress={progress} />
             )}
           </div>
         ) : (

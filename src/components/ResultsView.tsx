@@ -1,6 +1,6 @@
 import { Download, Share2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AnalysisResult } from "@/types/analysis";
+import { AnalysisResult } from "@/types";
 
 interface ResultsViewProps {
   results: AnalysisResult;

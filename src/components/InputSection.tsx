@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Upload, Link, Key, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { InputType } from "@/types/analysis";
+import { InputType } from "@/types";
 
 interface InputSectionProps {
   onAnalyze: (formData: FormData) => Promise<void>;
@@ -159,7 +159,7 @@ export function InputSection({ onAnalyze, isAnalyzing }: InputSectionProps) {
           </>
         ) : (
           <>
-            <Play className="w-4 h-4" />
+            <Play className="w-4 h-4 cursor-default" />
             Analyze Specification
           </>
         )}
