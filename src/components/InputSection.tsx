@@ -76,10 +76,11 @@ export function InputSection({ onAnalyze, isAnalyzing }: InputSectionProps) {
       {/* URL Input */}
       {inputType === "url" && (
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label htmlFor="url-input" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             OpenAPI Specification URL
           </label>
           <input
+            id="url-input"
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
@@ -123,11 +124,12 @@ export function InputSection({ onAnalyze, isAnalyzing }: InputSectionProps) {
 
       {/* API Key Input */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label htmlFor="api-key-input" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           OpenAI API Key (Optional)
         </label>
         <div className="relative">
           <input
+            id="api-key-input"
             type="password"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
