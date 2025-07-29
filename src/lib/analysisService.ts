@@ -3,6 +3,7 @@ import { OpenAPISpec, SpectralResult, AnalysisResult } from '@/types';
 import { getSpecContent, parseSpecContent, validateOpenAPIVersion } from './openapiParser';
 import { analyzeAIReadiness } from './aiReadinessAnalyzer';
 import { generateOpenAISuggestions } from './openaiService';
+import { runSpectralAnalysis } from './spectralService';
 import { storeResult } from './resultsStore';
 
 export interface AnalysisOptions {
@@ -27,9 +28,9 @@ export async function performAnalysis(options: AnalysisOptions): Promise<Analysi
   onProgress?.(45, "Validating OpenAPI version...", "validate");
   validateOpenAPIVersion(spec);
 
-  // Step 4: Spectral linting (simulated for now)
+  // Step 4: Spectral linting
   onProgress?.(60, "Analyzing spec with Spectral linting...", "spectral");
-  const spectralResults: SpectralResult[] = [];
+  const spectralResults: SpectralResult[] = await runSpectralAnalysis(spec);
 
   // Step 5: AI readiness analysis
   onProgress?.(75, "Assessing AI readiness...", "ai_readiness");

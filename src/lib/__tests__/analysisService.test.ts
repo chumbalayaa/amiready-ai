@@ -15,6 +15,10 @@ jest.mock('../openaiService', () => ({
   generateOpenAISuggestions: jest.fn(),
 }))
 
+jest.mock('../spectralService', () => ({
+  runSpectralAnalysis: jest.fn(),
+}))
+
 jest.mock('../resultsStore', () => ({
   storeResult: jest.fn(),
 }))
@@ -44,6 +48,14 @@ describe('performAnalysis', () => {
     }
   ]
 
+  const mockSpectralResults = [
+    {
+      message: 'Test spectral warning',
+      path: ['paths', '/test', 'get'],
+      severity: 1
+    }
+  ]
+
   beforeEach(() => {
     jest.clearAllMocks()
 
@@ -61,6 +73,8 @@ describe('performAnalysis', () => {
 
   it('should perform analysis without API key', async () => {
     const onProgress = jest.fn()
+    const { runSpectralAnalysis } = require('../spectralService')
+    runSpectralAnalysis.mockResolvedValue(mockSpectralResults)
 
     const result = await performAnalysis({
       url: 'https://example.com/openapi.json',
@@ -71,6 +85,8 @@ describe('performAnalysis', () => {
     expect(result).toHaveProperty('aiReadinessScores', mockAiReadinessScores)
     expect(result).toHaveProperty('suggestions', [])
     expect(result).toHaveProperty('timestamp')
+    expect(result.spectralResults.warnings).toHaveLength(1)
+    expect(result.spectralResults.warnings[0].message).toBe('Test spectral warning')
 
     // Check progress calls
     expect(onProgress).toHaveBeenCalledWith(15, 'Fetching OpenAPI specification...', 'fetch')
@@ -85,6 +101,8 @@ describe('performAnalysis', () => {
   it('should perform analysis with API key', async () => {
     const onProgress = jest.fn()
     const { generateOpenAISuggestions } = require('../openaiService')
+    const { runSpectralAnalysis } = require('../spectralService')
+    runSpectralAnalysis.mockResolvedValue(mockSpectralResults)
 
     const result = await performAnalysis({
       url: 'https://example.com/openapi.json',
@@ -102,6 +120,8 @@ describe('performAnalysis', () => {
   it('should handle file input', async () => {
     const mockFile = new File(['{"openapi": "3.0.0"}'], 'test.json', { type: 'application/json' })
     const { getSpecContent } = require('../openapiParser')
+    const { runSpectralAnalysis } = require('../spectralService')
+    runSpectralAnalysis.mockResolvedValue(mockSpectralResults)
 
     await performAnalysis({
       file: mockFile,
@@ -113,6 +133,8 @@ describe('performAnalysis', () => {
 
   it('should handle errors gracefully', async () => {
     const { getSpecContent } = require('../openapiParser')
+    const { runSpectralAnalysis } = require('../spectralService')
+    runSpectralAnalysis.mockResolvedValue(mockSpectralResults)
     getSpecContent.mockRejectedValue(new Error('Failed to fetch'))
 
     await expect(performAnalysis({
@@ -120,4 +142,5 @@ describe('performAnalysis', () => {
       onProgress: jest.fn()
     })).rejects.toThrow('Failed to fetch')
   })
+
 }) 

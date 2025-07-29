@@ -21,4 +21,5 @@ export {
 } from './resultsStore';
 
 // Stream utilities
-export { createStreamEncoder } from './streamUtils'; 
+export { createStreamEncoder } from './streamUtils';
+export { runSpectralAnalysis } from './spectralService'; 
