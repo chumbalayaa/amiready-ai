@@ -10,19 +10,40 @@ export async function POST(request: NextRequest) {
     const file = formData.get("file") as File;
     const apiKey = formData.get("apiKey") as string;
 
-    // For debugging: try without streaming first
-    console.log("Starting analysis...");
-    const results = await performAnalysis({
-      url,
-      file,
-      apiKey,
-      onProgress: (progress, step, stepKey) => {
-        console.log("Progress:", { progress, step, stepKey });
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          const results = await performAnalysis({
+            url,
+            file,
+            apiKey,
+            onProgress: (progress, step, stepKey) => {
+              console.log("Sending progress:", { progress, step, stepKey });
+              controller.enqueue(sendProgress(progress, step, stepKey));
+            }
+          });
+          console.log("Analysis complete, sending results:", results.id);
+          const completeData = sendComplete(results);
+          console.log("Complete data to send:", completeData);
+          controller.enqueue(completeData);
+          console.log("Results sent, waiting before closing stream");
+          // Small delay to ensure data is sent
+          await new Promise(resolve => setTimeout(resolve, 100));
+          controller.close();
+          console.log("Stream closed");
+        } catch (error) {
+          controller.error(error);
+        }
       }
     });
-    console.log("Analysis completed successfully:", results.id);
 
-    return NextResponse.json(results);
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+      },
+    });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Analysis failed" },

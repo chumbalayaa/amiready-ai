@@ -39,9 +39,7 @@ export async function performAnalysis(options: AnalysisOptions): Promise<Analysi
   let openAISuggestions: string[] = [];
   if (apiKey) {
     onProgress?.(85, "Generating suggestions with OpenAI...", "openai");
-    console.log("Calling OpenAI service...");
     openAISuggestions = await generateOpenAISuggestions(spec, apiKey);
-    console.log("OpenAI service completed, got suggestions:", openAISuggestions.length);
   } else {
     // Skip OpenAI step if no API key
     onProgress?.(85, "Skipping OpenAI suggestions (no API key)...", "openai");
@@ -49,7 +47,6 @@ export async function performAnalysis(options: AnalysisOptions): Promise<Analysi
 
   // Step 7: Create and store results
   onProgress?.(95, "Finalizing and saving results...", "finalize");
-  console.log("Creating final results...");
   const resultId = uuidv4();
   const results: AnalysisResult = {
     id: resultId,
@@ -64,6 +61,5 @@ export async function performAnalysis(options: AnalysisOptions): Promise<Analysi
   };
 
   storeResult(results);
-  console.log("Analysis service completed, returning results with ID:", resultId);
   return results;
 } 

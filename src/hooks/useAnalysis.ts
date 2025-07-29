@@ -40,7 +40,6 @@ export function useAnalysis() {
     }, 30000); // 30 second timeout
 
     try {
-      console.log("Fetching analysis", formData);
       const response = await fetch("/api/analyze", {
         method: "POST",
         body: formData,
@@ -50,39 +49,38 @@ export function useAnalysis() {
         throw new Error("Analysis failed");
       }
 
-      // For debugging: try non-streaming response first
-      const results = await response.json();
-      console.log("✅ Analysis complete, results:", results);
-      clearTimeout(timeoutId);
-      setResults(results);
-      setIsAnalyzing(false);
-      setProgress(100);
-      setCurrentStep("Analysis complete");
-      setSteps(prev => prev.map(step => ({ ...step, status: "complete" })));
-      return;
-
-      // Streaming code commented out for debugging
-      /*
       const reader = response.body?.getReader();
       if (!reader) throw new Error("No response body");
 
+      let buffer = ""; // Buffer to accumulate data across chunks
+
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
+        console.log("Stream read:", { done, valueLength: value?.length });
+        if (done) {
+          console.log("Stream done, breaking loop");
+          break;
+        }
 
         const chunk = new TextDecoder().decode(value);
-        const lines = chunk.split("\n");
+        buffer += chunk;
+        console.log("Buffer length:", buffer.length);
+
+        // Process complete lines from the buffer
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || ""; // Keep incomplete line in buffer
 
         for (const line of lines) {
           if (line.startsWith("data: ")) {
             const jsonStr = line.slice(6).trim();
             if (!jsonStr) continue; // skip empty data lines
+
             let data;
             try {
               data = JSON.parse(jsonStr);
               console.log("Received data:", data); // Debug log
             } catch (e) {
-              console.warn("Failed to parse JSON:", jsonStr, e);
+              console.warn("Failed to parse JSON:", jsonStr.substring(0, 100) + "...", e);
               continue;
             }
             if (data.type === "progress") {
@@ -117,7 +115,6 @@ export function useAnalysis() {
           }
         }
       }
-      */
     } catch (error) {
       console.error("Analysis error:", error);
       clearTimeout(timeoutId); // Clear the timeout on error
