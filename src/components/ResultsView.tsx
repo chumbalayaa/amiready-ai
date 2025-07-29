@@ -36,7 +36,7 @@ export function ResultsView({ results, onReset }: ResultsViewProps) {
         {/* Spectral Results Summary */}
         <div className="mb-8">
           <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-            Spectral Linting Results
+            OpenAI Spec Linting Results
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
@@ -67,14 +67,15 @@ export function ResultsView({ results, onReset }: ResultsViewProps) {
               AI-Generated Suggestions
             </h3>
             <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-              <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+              <div className="space-y-4">
                 {results.suggestions.map((suggestion: string, idx: number) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-blue-500 mt-1">•</span>
-                    {suggestion}
-                  </li>
+                  <div key={idx} className="border-l-4 border-blue-500 pl-4">
+                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                      {suggestion}
+                    </p>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         )}
