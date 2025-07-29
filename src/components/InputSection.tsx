@@ -40,8 +40,8 @@ export function InputSection({ onAnalyze, isAnalyzing }: InputSectionProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-8">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-8 border border-purple-100 dark:border-purple-800">
+      <h2 className="text-2xl font-semibold mb-6 text-[#302547] dark:text-white">
         Upload Your OpenAPI Specification
       </h2>
 
@@ -52,8 +52,8 @@ export function InputSection({ onAnalyze, isAnalyzing }: InputSectionProps) {
           className={cn(
             "flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors",
             inputType === "url"
-              ? "bg-blue-500 text-white border-blue-500"
-              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+              ? "bg-[#302547] text-white border-[#302547]"
+              : "bg-white text-gray-700 border-gray-300 hover:bg-purple-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:bg-gray-600"
           )}
         >
           <Link className="w-4 h-4" />
@@ -64,8 +64,8 @@ export function InputSection({ onAnalyze, isAnalyzing }: InputSectionProps) {
           className={cn(
             "flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors",
             inputType === "file"
-              ? "bg-blue-500 text-white border-blue-500"
-              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+              ? "bg-[#302547] text-white border-[#302547]"
+              : "bg-white text-gray-700 border-gray-300 hover:bg-purple-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:bg-gray-600"
           )}
         >
           <Upload className="w-4 h-4" />
@@ -85,7 +85,7 @@ export function InputSection({ onAnalyze, isAnalyzing }: InputSectionProps) {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="https://example.com/openapi.json"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#302547] focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
       )}
@@ -96,7 +96,7 @@ export function InputSection({ onAnalyze, isAnalyzing }: InputSectionProps) {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Upload OpenAPI File
           </label>
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#302547] transition-colors">
             <input
               type="file"
               accept=".json,.yaml,.yml"
@@ -134,7 +134,7 @@ export function InputSection({ onAnalyze, isAnalyzing }: InputSectionProps) {
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
             placeholder="sk-..."
-            className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#302547] focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
           <Key className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
         </div>
@@ -151,7 +151,7 @@ export function InputSection({ onAnalyze, isAnalyzing }: InputSectionProps) {
           "w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors",
           isAnalyzing || (!url && !file)
             ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-            : "bg-blue-600 text-white hover:bg-blue-700"
+            : "bg-[#302547] text-white hover:bg-[#1a1a2e]"
         )}
       >
         {isAnalyzing ? (

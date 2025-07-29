@@ -14,8 +14,8 @@ interface ProgressSectionProps {
 
 export function ProgressSection({ steps, progress, currentStep }: ProgressSectionProps) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-      <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 border border-purple-100 dark:border-purple-800">
+      <h3 className="text-xl font-semibold mb-4 text-[#302547] dark:text-white">
         Analysis Progress
       </h3>
       <div className="mb-4">
@@ -34,7 +34,7 @@ export function ProgressSection({ steps, progress, currentStep }: ProgressSectio
             aria-valuenow={progress}
             aria-valuemin={0}
             aria-valuemax={100}
-            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+            className="bg-[#302547] h-2 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           ></div>
         </div>
@@ -45,14 +45,14 @@ export function ProgressSection({ steps, progress, currentStep }: ProgressSectio
             {step.status === "complete" ? (
               <CheckCircle className="w-4 h-4 text-green-500" />
             ) : step.status === "in_progress" ? (
-              <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />
+              <Loader2 className="w-4 h-4 text-[#302547] animate-spin" />
             ) : (
               <Circle className="w-4 h-4 text-gray-400" />
             )}
             <span
               className={
                 step.status === "in_progress"
-                  ? "font-semibold text-blue-600 dark:text-blue-400"
+                  ? "font-semibold text-[#302547] dark:text-purple-400"
                   : step.status === "complete"
                   ? "text-gray-700 dark:text-gray-300"
                   : "text-gray-400"
