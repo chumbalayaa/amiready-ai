@@ -22,8 +22,8 @@ describe('Home Page', () => {
   it('should render the main page with title and description', () => {
     render(<Home />)
 
-    expect(screen.getByText('AI-Ready API Checker')).toBeInTheDocument()
-    expect(screen.getByText(/Analyze your OpenAPI specifications/)).toBeInTheDocument()
+    expect(screen.getByText('API AI Readiness Checker')).toBeInTheDocument()
+    expect(screen.getByText(/Is your API ready for AI agents/)).toBeInTheDocument()
   })
 
   it('should show input section when no results', () => {

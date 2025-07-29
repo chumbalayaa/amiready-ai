@@ -37,9 +37,19 @@ describe('useAnalysis', () => {
       timestamp: '2024-01-01T00:00:00.000Z'
     }
 
+    // Mock streaming response
+    const mockStreamData = `data: ${JSON.stringify({ type: "complete", results: mockResults })}\n\n`;
+    const mockReader = {
+      read: jest.fn()
+        .mockResolvedValueOnce({ done: false, value: new TextEncoder().encode(mockStreamData) })
+        .mockResolvedValueOnce({ done: true, value: undefined })
+    };
+
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => mockResults
+      body: {
+        getReader: () => mockReader
+      }
     })
 
     const { result } = renderHook(() => useAnalysis())
@@ -75,9 +85,19 @@ describe('useAnalysis', () => {
       timestamp: '2024-01-01T00:00:00.000Z'
     }
 
+    // Mock streaming response
+    const mockStreamData = `data: ${JSON.stringify({ type: "complete", results: mockResults })}\n\n`;
+    const mockReader = {
+      read: jest.fn()
+        .mockResolvedValueOnce({ done: false, value: new TextEncoder().encode(mockStreamData) })
+        .mockResolvedValueOnce({ done: true, value: undefined })
+    };
+
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => mockResults
+      body: {
+        getReader: () => mockReader
+      }
     })
 
     const { result } = renderHook(() => useAnalysis())

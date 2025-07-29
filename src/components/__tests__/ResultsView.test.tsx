@@ -69,7 +69,7 @@ describe('ResultsView', () => {
   it('should display spectral results summary', () => {
     render(<ResultsView results={mockResults} onReset={mockOnReset} />)
 
-    expect(screen.getByText('Spectral Linting Results')).toBeInTheDocument()
+    expect(screen.getByText('OpenAI Spec Linting Results')).toBeInTheDocument()
     expect(screen.getAllByText('0')).toHaveLength(3) // errors, warnings, and info counts
   })
 }) 
