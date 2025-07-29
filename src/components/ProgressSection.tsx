@@ -9,9 +9,10 @@ interface Step {
 interface ProgressSectionProps {
   steps: Step[];
   progress: number;
+  currentStep?: string;
 }
 
-export function ProgressSection({ steps, progress }: ProgressSectionProps) {
+export function ProgressSection({ steps, progress, currentStep }: ProgressSectionProps) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
       <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
@@ -20,7 +21,8 @@ export function ProgressSection({ steps, progress }: ProgressSectionProps) {
       <div className="mb-4">
         <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
           <span>
-            {steps.find((s) => s.status === "in_progress")?.label ||
+            {currentStep || 
+              steps.find((s) => s.status === "in_progress")?.label ||
               steps.find((s) => s.status === "complete")?.label ||
               steps[0].label}
           </span>
@@ -34,7 +36,7 @@ export function ProgressSection({ steps, progress }: ProgressSectionProps) {
         </div>
       </div>
       <ol className="space-y-2 mt-4">
-        {steps.map((step, idx) => (
+        {steps.map((step) => (
           <li key={step.key} className="flex items-center gap-2 text-sm">
             {step.status === "complete" ? (
               <CheckCircle className="w-4 h-4 text-green-500" />

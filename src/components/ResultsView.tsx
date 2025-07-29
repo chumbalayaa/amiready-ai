@@ -60,6 +60,25 @@ export function ResultsView({ results, onReset }: ResultsViewProps) {
           </div>
         </div>
 
+        {/* OpenAI Suggestions */}
+        {results.suggestions && results.suggestions.length > 0 && (
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+              AI-Generated Suggestions
+            </h3>
+            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+              <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+                {results.suggestions.map((suggestion: string, idx: number) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-1">•</span>
+                    {suggestion}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+
         {/* AI Readiness Scores */}
         <div>
           <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">

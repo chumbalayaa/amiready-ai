@@ -26,7 +26,7 @@ export default function Home() {
             <InputSection onAnalyze={analyze} isAnalyzing={isAnalyzing} />
             
             {isAnalyzing && (
-              <ProgressSection steps={steps} progress={progress} />
+              <ProgressSection steps={steps} progress={progress} currentStep={currentStep} />
             )}
           </div>
         ) : (

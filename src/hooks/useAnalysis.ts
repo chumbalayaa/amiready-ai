@@ -40,6 +40,7 @@ export function useAnalysis() {
     }, 30000); // 30 second timeout
 
     try {
+      console.log("Fetching analysis", formData);
       const response = await fetch("/api/analyze", {
         method: "POST",
         body: formData,
@@ -49,6 +50,19 @@ export function useAnalysis() {
         throw new Error("Analysis failed");
       }
 
+      // For debugging: try non-streaming response first
+      const results = await response.json();
+      console.log("✅ Analysis complete, results:", results);
+      clearTimeout(timeoutId);
+      setResults(results);
+      setIsAnalyzing(false);
+      setProgress(100);
+      setCurrentStep("Analysis complete");
+      setSteps(prev => prev.map(step => ({ ...step, status: "complete" })));
+      return;
+
+      // Streaming code commented out for debugging
+      /*
       const reader = response.body?.getReader();
       if (!reader) throw new Error("No response body");
 
@@ -72,19 +86,24 @@ export function useAnalysis() {
               continue;
             }
             if (data.type === "progress") {
+              console.log("🪨 Progress step:", data.stepKey, data.step);
               setProgress(data.progress);
               setCurrentStep(data.step);
               if (data.stepKey) {
-                setSteps(prev => prev.map(step =>
-                  step.key === data.stepKey
-                    ? { ...step, status: "in_progress" }
-                    : step.status === "in_progress"
-                      ? { ...step, status: "complete" }
-                      : step
-                ));
+                setSteps(prev => prev.map(step => {
+                  // If this is the current step, mark it as in_progress
+                  if (step.key === data.stepKey) {
+                    return { ...step, status: "in_progress" };
+                  }
+                  // If this step was in_progress, mark it as complete
+                  if (step.status === "in_progress") {
+                    return { ...step, status: "complete" };
+                  }
+                  return step;
+                }));
               }
             } else if (data.type === "complete") {
-              console.log("Analysis complete, setting results:", data.results);
+              console.log("✅ Analysis complete, results:", data.results);
               clearTimeout(timeoutId); // Clear the timeout
               setResults(data.results);
               setIsAnalyzing(false);
@@ -92,10 +111,13 @@ export function useAnalysis() {
               setCurrentStep("Analysis complete");
               // Mark all steps as complete
               setSteps(prev => prev.map(step => ({ ...step, status: "complete" })));
+            } else {
+              console.log("⚠️ Unknown event type:", data.type);
             }
           }
         }
       }
+      */
     } catch (error) {
       console.error("Analysis error:", error);
       clearTimeout(timeoutId); // Clear the timeout on error
