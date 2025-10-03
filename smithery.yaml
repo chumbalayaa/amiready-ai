@@ -1,0 +1,14 @@
+name: github-mcp-server
+version: 1.0.0
+description: GitHub MCP server for financial agent
+
+build:
+  type: mcp
+  entrypoint: index.js
+
+mcp:
+  servers:
+    - name: github
+      url: https://server.smithery.ai/@smithery-ai/github
+      tools:
+        - github
